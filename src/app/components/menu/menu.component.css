@@ -1,0 +1,6 @@
+/* src/app/components/menu/menu.component.css */  
+.navbar-nav .nav-link:hover {  
+    background-color: #27A755;  
+    color: white;  
+    cursor: pointer;
+  }  

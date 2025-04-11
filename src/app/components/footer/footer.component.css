@@ -1,0 +1,6 @@
+/* src/app/components/footer/footer.component.css */  
+.footer {  
+    position: fixed;  
+    bottom: 0;  
+    width: 100%;  
+  }  
