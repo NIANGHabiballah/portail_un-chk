@@ -8,4 +8,16 @@ import { Component } from '@angular/core';
 })
 export class CommunicationComponent {
 
+    creerReunion() {
+      alert("Fonctionnalité 'Créer une Réunion' en cours de développement.");
+  }
+
+  planifierSeminaire() {
+      alert("Fonctionnalité 'Planifier un Séminaire' en cours de développement.");
+  }
+
+  ajouterCirculaire() {
+      alert("Fonctionnalité 'Ajouter une Circulaire' en cours de développement.");
+  }
+
 }

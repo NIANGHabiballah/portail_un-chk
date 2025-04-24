@@ -1,6 +1,59 @@
-/* src/app/components/menu/menu.component.css */  
-.navbar-nav .nav-link:hover {  
-    background-color: #27A755;  
-    color: white;  
-    cursor: pointer;
-  }  
+/* Style pour le logo */
+.navbar-brand {
+  float: left; /* Le logo reste à gauche */
+  margin-right: auto; /* Sépare le logo des autres éléments */
+}
+
+/* Style pour les autres éléments du menu */
+.navbar-nav {
+  display: flex;
+  justify-content: flex-end; /* Aligne les éléments à droite */
+  margin-left: auto; /* Pousse les éléments vers la droite */
+  padding-right: 0;
+}
+
+/* Style pour les liens du menu */
+.navbar-nav .nav-link {
+  margin-left: 15px; /* Ajoute un espacement entre les liens */
+}
+
+/* Style pour l'icône utilisateur */
+.nav-item:last-child {
+  margin-right: 25px; /* Ajoute un espacement entre l'icône utilisateur et la marge de droite */
+}
+
+/* .navbar-nav .nav-link {
+  color: black; Couleur verte pour le texte 
+} */
+
+
+/* Style pour le bouton actif du menu */
+.navbar-nav .nav-link.active {
+  color: #27A755; /* Couleur verte pour le texte */
+  font-weight: bold; /* Met le texte en gras */
+  border-bottom: 2px solid #27A755; /* Ajoute une bordure verte en bas */
+}
+
+/* Style pour le hover des liens */
+.navbar-nav .nav-link:hover {
+  color: #27A755;
+  cursor: pointer;
+}
+
+.nav-item i{
+  color: #27A755;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Style pour le logo */
+.navbar-brand {
+  float: left; /* Le logo reste à gauche */
+  margin-right: auto; /* Sépare le logo des autres éléments */
+  margin-left: 50px; /* Ajoute un espacement à gauche pour pousser le logo à droite */
+}
+
+/* Ajoute une ombre au fond du menu */
+.navbar {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile sous le menu */
+}

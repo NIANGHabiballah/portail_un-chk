@@ -1,0 +1,5 @@
+/* Ajoute un espace entre le menu et le contenu principal */
+body {
+    padding-top: 20px; /* Ajuste cette valeur en fonction de la hauteur de votre menu */
+    padding-bottom: 20px;
+  }
