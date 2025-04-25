@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="form-container">
+          <h3 class="text-center text-primary mb-4">Inscription</h3>
+          <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            <div class="mb-3">
+              <label for="email" class="form-label">Adresse Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Entrez votre email" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Mot de Passe</label>
+              <input type="password" class="form-control" id="password" formControlName="password" placeholder="Entrez votre mot de passe" required>
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmez le Mot de Passe</label>
+              <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirmez votre mot de passe" required>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-custom">S'inscrire</button>
+            </div>
+          </form>
+          <p class="text-center mt-3">
+            Déjà inscrit ? <a routerLink="/login" class="btn btn-link">Se connecter</a>
+          </p>
+        </div>
+      </div>
+</body>
+</html>
