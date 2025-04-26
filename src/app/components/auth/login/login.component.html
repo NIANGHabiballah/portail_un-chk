@@ -3,29 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Connexion</title>
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="form-container">
-          <h3 class="text-center text-primary mb-4">Connexion</h3>
-          <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-            <div class="mb-3">
-              <label for="email" class="form-label">Adresse Email</label>
-              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Entrez votre email" required>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Mot de Passe</label>
-              <input type="password" class="form-control" id="password" formControlName="password" placeholder="Entrez votre mot de passe" required>
-            </div>
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-primary btn-custom">Se Connecter</button>
-            </div>
-          </form>
-          <p class="text-center mt-3">
-            Pas encore inscrit ? <a routerLink="/register" class="btn btn-link">Créer un compte</a>
-          </p>
+  <div class="container mt-5">
+    <div class="form-container">
+      <h3 class="text-center text-primary mb-4">Connexion</h3>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Adresse Email</label>
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="Entrez votre email" required>
+          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
+            Veuillez entrer une adresse email valide.
+          </div>
         </div>
-      </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Mot de Passe</label>
+          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Entrez votre mot de passe" required>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
+            Veuillez entrer votre mot de passe.
+          </div>
+        </div>
+        <div *ngIf="errorMessage" class="text-danger mb-3">
+          {{ errorMessage }}
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary btn-custom">Se Connecter</button>
+        </div>
+      </form>
+      <p class="text-center mt-3">
+        Pas encore inscrit ? <a [routerLink]="['/register']" class="btn btn-link">Créer un compte</a>
+      </p>
+    </div>
+  </div>
 </body>
 </html>

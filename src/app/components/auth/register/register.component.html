@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inscription</title>
 </head>
 <body>
     <div class="container mt-5">
@@ -13,21 +13,33 @@
             <div class="mb-3">
               <label for="email" class="form-label">Adresse Email</label>
               <input type="email" class="form-control" id="email" formControlName="email" placeholder="Entrez votre email" required>
+              <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
+                Veuillez entrer une adresse email valide.
+              </div>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Mot de Passe</label>
               <input type="password" class="form-control" id="password" formControlName="password" placeholder="Entrez votre mot de passe" required>
+              <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger">
+                Le mot de passe doit contenir au moins 6 caractères.
+              </div>
             </div>
             <div class="mb-3">
               <label for="confirmPassword" class="form-label">Confirmez le Mot de Passe</label>
               <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirmez votre mot de passe" required>
+              <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="text-danger">
+                Veuillez confirmer votre mot de passe.
+              </div>
+            </div>
+            <div *ngIf="errorMessage" class="text-danger mb-3">
+              {{ errorMessage }}
             </div>
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-primary btn-custom">S'inscrire</button>
             </div>
           </form>
           <p class="text-center mt-3">
-            Déjà inscrit ? <a routerLink="/login" class="btn btn-link">Se connecter</a>
+            Pas encore inscrit ? <a [routerLink]="['/login']" class="btn btn-link">Se connecter</a>
           </p>
         </div>
       </div>

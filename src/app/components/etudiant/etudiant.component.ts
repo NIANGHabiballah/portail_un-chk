@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { EtudiantService } from '../../services/etudiant.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 
@@ -15,19 +15,21 @@ export class EtudiantComponent implements OnInit {
   etudiantForm: FormGroup;
   etudiants: any[] = []; // Liste des étudiants
   message: string = ''; // Message de succès ou d'erreur
+  @ViewChild('formSection') formSection!: ElementRef; // Référence au formulaire
+
 
   constructor(private etudiantService: EtudiantService, private fb: FormBuilder) {
     this.etudiantForm = this.fb.group({
       id: [''],
-      nom: [''],
-      prenom: [''],
-      dateNaissance: [''],
-      formation: [''],
-      promo: [''],
-      anneeDebut: [''],
-      anneeSortie: [''],
-      diplome: [''], // Ajout du champ manquant
-      autresFormations: [''] // Ajout du champ manquant
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
+      dateNaissance: ['', Validators.required],
+      formation: ['', Validators.required],
+      promo: ['', Validators.required],
+      anneeDebut: ['', Validators.required],
+      anneeSortie: ['', Validators.required],
+      diplome: ['', Validators.required],
+      autresFormations: ['']
     });
   }
 
@@ -128,5 +130,8 @@ export class EtudiantComponent implements OnInit {
   
     // Pré-remplir le formulaire
     this.etudiantForm.patchValue(etudiant);
+
+     // Scroller vers le formulaire
+     this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 }
