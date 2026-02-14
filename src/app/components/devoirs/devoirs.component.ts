@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 
 declare var bootstrap: any;
 
@@ -19,8 +18,6 @@ export class DevoirsComponent {
   selectedDevoir: any = null;
   selectedFile: File | null = null;
 
-  constructor(private http: HttpClient) {}
-
   selectDevoir(devoir: any): void {
     this.selectedDevoir = devoir;
     this.selectedFile = null;
@@ -36,19 +33,14 @@ export class DevoirsComponent {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('devoirId', this.selectedDevoir.id);
-
-    this.http.post('http://localhost:8080/api/devoirs/submit', formData).subscribe({
-      next: () => {
-        this.showToast('Devoir soumis avec succès');
-        this.selectedDevoir.statut = 'Rendu';
-        const modal = bootstrap.Modal.getInstance(document.getElementById('submitModal'));
-        if (modal) modal.hide();
-      },
-      error: () => this.showToast('Erreur lors de la soumission', true)
-    });
+    // Simulation de soumission (sans appel backend)
+    this.showToast(`Devoir "${this.selectedDevoir.titre}" soumis avec succès`);
+    this.selectedDevoir.statut = 'Rendu';
+    this.selectedFile = null;
+    
+    // Réinitialiser le champ fichier
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
   }
 
   showToast(message: string, isError: boolean = false): void {

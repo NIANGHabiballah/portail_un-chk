@@ -31,7 +31,8 @@ export class AppComponent implements OnInit {
     });
 
     this.notificationService.requestPermission();
-    this.notificationService.startPolling();
+    // Polling désactivé pour éviter les notifications en boucle
+    // this.notificationService.startPolling();
   }
 
   private updateMenuState(url: string) {

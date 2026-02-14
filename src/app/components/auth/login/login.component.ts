@@ -14,12 +14,26 @@ import { CommonModule } from '@angular/common';
 
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
+  forgotPasswordForm: FormGroup;
+  supportForm: FormGroup;
   errorMessage: string = '';
+  resetMessage: string = '';
+  resetError: string = '';
+  supportMessage: string = '';
+  supportError: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
+    });
+    this.forgotPasswordForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+    this.supportForm = this.fb.group({
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      message: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
@@ -73,6 +87,38 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
     } else {
       this.errorMessage = 'Veuillez remplir tous les champs correctement.';
+    }
+  }
+
+  onForgotPassword(): void {
+    this.resetMessage = '';
+    this.resetError = '';
+    
+    if (this.forgotPasswordForm.valid) {
+      const email = this.forgotPasswordForm.value.email;
+      
+      // Simulation d'envoi d'email
+      setTimeout(() => {
+        this.resetMessage = `Un email de réinitialisation a été envoyé à ${email}`;
+        this.forgotPasswordForm.reset();
+      }, 1000);
+    } else {
+      this.resetError = 'Veuillez entrer une adresse email valide.';
+    }
+  }
+
+  onContactSupport(): void {
+    this.supportMessage = '';
+    this.supportError = '';
+    
+    if (this.supportForm.valid) {
+      // Simulation d'envoi de message
+      setTimeout(() => {
+        this.supportMessage = 'Votre message a été envoyé avec succès. Notre équipe vous répondra dans les plus brefs délais.';
+        this.supportForm.reset();
+      }, 1000);
+    } else {
+      this.supportError = 'Veuillez remplir tous les champs correctement.';
     }
   }
 }

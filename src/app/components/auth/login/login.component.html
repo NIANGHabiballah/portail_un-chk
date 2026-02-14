@@ -1,6 +1,6 @@
   <div class="container-fluid">
     <div class="row justify-content-center align-items-center min-vh-100">
-      <div class="col-12">
+      <div class="col-12 p-0">
         <div class="card shadow-lg border-0">
           <div class="card-body p-5">
             <!-- Logo -->
@@ -25,7 +25,7 @@
                     class="form-control" 
                     id="email" 
                     formControlName="email" 
-                    placeholder="exemple@unchk.edu.sn"
+                    placeholder="exemple&#64;unchk.edu.sn"
                     [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
                     aria-required="true"
                     aria-describedby="emailError"
@@ -107,7 +107,7 @@
 
               <!-- Mot de passe oublié -->
               <div class="text-center mb-3">
-                <a href="javascript:void(0)" class="text-primary text-decoration-none">
+                <a href="javascript:void(0)" class="text-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
                   <i class="bi bi-question-circle me-1" aria-hidden="true"></i>
                   Mot de passe oublié ?
                 </a>
@@ -163,8 +163,231 @@
         <div class="text-center mt-3">
           <small class="text-secondary">
             <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
-            Besoin d'aide ? <a href="javascript:void(0)" class="text-primary">Contactez le support</a>
+            Besoin d'aide ? <a href="javascript:void(0)" class="text-primary" data-bs-toggle="modal" data-bs-target="#supportModal">Contactez le support</a>
           </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Contact Support AMÉLIORÉ -->
+  <div class="modal fade" id="supportModal" tabindex="-1" aria-labelledby="supportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg">
+        
+        <!-- Header avec design moderne -->
+        <div class="modal-header border-0 pb-0" style="background: linear-gradient(135deg, #0056B3 0%, #004494 100%); color: white; padding: 2rem;">
+          <div>
+            <h5 class="modal-title fw-bold mb-2" id="supportModalLabel" style="font-size: 1.5rem;">
+              <i class="bi bi-headset me-2"></i>Contactez le support
+            </h5>
+            <p class="mb-0" style="opacity: 0.9; font-size: 0.95rem;">Notre équipe est là pour vous aider</p>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+
+        <div class="modal-body" style="padding: 2rem;">
+          
+          <form [formGroup]="supportForm" (ngSubmit)="onContactSupport()" class="needs-validation">
+            
+            <!-- Nom complet -->
+            <div class="mb-4">
+              <label for="supportName" class="form-label fw-semibold mb-2">
+                <i class="bi bi-person text-primary me-2"></i>Nom complet
+              </label>
+              <input 
+                type="text" 
+                class="form-control form-control-lg" 
+                id="supportName" 
+                formControlName="name"
+                placeholder="Entrez votre nom complet"
+                [class.is-invalid]="supportForm.get('name')?.invalid && supportForm.get('name')?.touched"
+                style="border-radius: 10px; padding: 0.75rem 1rem;"
+              >
+              <div 
+                *ngIf="supportForm.get('name')?.invalid && supportForm.get('name')?.touched" 
+                class="invalid-feedback d-flex align-items-center mt-2"
+              >
+                <i class="bi bi-exclamation-circle me-2"></i>
+                Le nom est obligatoire
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+              <label for="supportEmail" class="form-label fw-semibold mb-2">
+                <i class="bi bi-envelope text-primary me-2"></i>Adresse Email
+              </label>
+              <input 
+                type="email" 
+                class="form-control form-control-lg" 
+                id="supportEmail" 
+                formControlName="email"
+                placeholder="votre.email&#64;unchk.edu.sn"
+                [class.is-invalid]="supportForm.get('email')?.invalid && supportForm.get('email')?.touched"
+                style="border-radius: 10px; padding: 0.75rem 1rem;"
+              >
+              <div 
+                *ngIf="supportForm.get('email')?.invalid && supportForm.get('email')?.touched" 
+                class="invalid-feedback d-flex align-items-center mt-2"
+              >
+                <i class="bi bi-exclamation-circle me-2"></i>
+                Veuillez entrer une adresse email valide
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div class="mb-4">
+              <label for="supportMessage" class="form-label fw-semibold mb-2">
+                <i class="bi bi-chat-dots text-primary me-2"></i>Votre message
+              </label>
+              <textarea 
+                class="form-control form-control-lg" 
+                id="supportMessage" 
+                formControlName="message"
+                rows="5"
+                placeholder="Décrivez votre problème en détail..."
+                [class.is-invalid]="supportForm.get('message')?.invalid && supportForm.get('message')?.touched"
+                style="border-radius: 10px; padding: 0.75rem 1rem; resize: none;"
+              ></textarea>
+              <div class="form-text mt-2">
+                <i class="bi bi-info-circle me-1"></i>
+                Minimum 10 caractères
+              </div>
+              <div 
+                *ngIf="supportForm.get('message')?.invalid && supportForm.get('message')?.touched" 
+                class="invalid-feedback d-flex align-items-center mt-2"
+              >
+                <i class="bi bi-exclamation-circle me-2"></i>
+                Le message doit contenir au moins 10 caractères
+              </div>
+            </div>
+
+            <!-- Messages de feedback -->
+            <div *ngIf="supportMessage" class="alert alert-success d-flex align-items-center mb-4" role="alert" style="border-radius: 10px; border-left: 4px solid #28A745;">
+              <i class="bi bi-check-circle-fill me-3 fs-4"></i>
+              <div>{{ supportMessage }}</div>
+            </div>
+
+            <div *ngIf="supportError" class="alert alert-danger d-flex align-items-center mb-4" role="alert" style="border-radius: 10px; border-left: 4px solid #DC3545;">
+              <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+              <div>{{ supportError }}</div>
+            </div>
+          </form>
+
+          <!-- Informations de contact -->
+          <div class="mt-4 p-4 rounded" style="background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%); border-left: 4px solid #0056B3;">
+            <h6 class="fw-bold mb-3">
+              <i class="bi bi-telephone-fill text-primary me-2"></i>
+              Autres moyens de contact
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-envelope-fill text-primary me-3 fs-5"></i>
+                  <div>
+                    <small class="text-muted d-block">Email</small>
+                    <strong>support&#64;unchk.edu.sn</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-telephone-fill text-primary me-3 fs-5"></i>
+                  <div>
+                    <small class="text-muted d-block">Téléphone</small>
+                    <strong>+221 33 444 66 44</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-clock-fill text-primary me-3 fs-5"></i>
+                  <div>
+                    <small class="text-muted d-block">Horaires</small>
+                    <strong>Lundi - Vendredi : 8h00 - 18h00</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer avec boutons espacés -->
+        <div class="modal-footer border-0" style="padding: 1.5rem 2rem; background-color: #F8F9FA;">
+          <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 10px; padding: 0.75rem 2rem;">
+            <i class="bi bi-x-circle me-2"></i>Fermer
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-lg btn-primary" 
+            (click)="onContactSupport()" 
+            [disabled]="supportForm.invalid"
+            style="border-radius: 10px; padding: 0.75rem 2rem;"
+          >
+            <i class="bi bi-send-fill me-2"></i>Envoyer le message
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Mot de passe oublié -->
+  <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="forgotPasswordModalLabel">
+            <i class="bi bi-key me-2"></i>Réinitialiser le mot de passe
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-secondary">Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.</p>
+          
+          <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPassword()">
+            <div class="mb-3">
+              <label for="resetEmail" class="form-label">Adresse Email</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-envelope"></i>
+                </span>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="resetEmail" 
+                  formControlName="email"
+                  placeholder="exemple&#64;unchk.edu.sn"
+                  [class.is-invalid]="forgotPasswordForm.get('email')?.invalid && forgotPasswordForm.get('email')?.touched"
+                >
+              </div>
+              <div 
+                *ngIf="forgotPasswordForm.get('email')?.invalid && forgotPasswordForm.get('email')?.touched" 
+                class="invalid-feedback d-block"
+              >
+                <i class="bi bi-exclamation-circle me-1"></i>
+                Veuillez entrer une adresse email valide.
+              </div>
+            </div>
+
+            <!-- Message de succès -->
+            <div *ngIf="resetMessage" class="alert alert-success d-flex align-items-center" role="alert">
+              <i class="bi bi-check-circle-fill me-2"></i>
+              <div>{{ resetMessage }}</div>
+            </div>
+
+            <!-- Message d'erreur -->
+            <div *ngIf="resetError" class="alert alert-danger d-flex align-items-center" role="alert">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <div>{{ resetError }}</div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-primary" (click)="onForgotPassword()" [disabled]="forgotPasswordForm.invalid">
+            <i class="bi bi-send me-2"></i>Envoyer le lien
+          </button>
         </div>
       </div>
     </div>

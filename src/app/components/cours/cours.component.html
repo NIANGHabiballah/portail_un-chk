@@ -19,77 +19,37 @@
         <h2 class="mb-4">Mes Cours</h2>
         
         <div class="row g-3">
-            <div class="col-md-6">
+            <div class="col-md-6" *ngFor="let cours of cours">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">Interaction Homme-Machine</h5>
-                        <p class="text-secondary small mb-2">Dr. Mamadou FALL</p>
-                        <p class="card-text">Conception d'interfaces utilisateur et principes d'ergonomie.</p>
+                        <h5 class="card-title">{{ cours.titre }}</h5>
+                        <p class="text-secondary small mb-2">{{ cours.enseignant }}</p>
+                        <p class="card-text">{{ cours.description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-success">En cours</span>
-                            <a href="#" class="btn btn-sm btn-primary">Accéder</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Technologie d'Application Web</h5>
-                        <p class="text-secondary small mb-2">Pr. Fatou SARR</p>
-                        <p class="card-text">Développement d'applications web modernes avec Angular et Spring Boot.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-success">En cours</span>
-                            <a href="#" class="btn btn-sm btn-primary">Accéder</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Base de Données Avancées</h5>
-                        <p class="text-secondary small mb-2">Dr. Moussa DIOP</p>
-                        <p class="card-text">Optimisation et administration de bases de données relationnelles.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-success">En cours</span>
-                            <a href="#" class="btn btn-sm btn-primary">Accéder</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Génie Logiciel</h5>
-                        <p class="text-secondary small mb-2">Pr. Aminata NDIAYE</p>
-                        <p class="card-text">Méthodologies agiles et gestion de projets informatiques.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-success">En cours</span>
-                            <a href="#" class="btn btn-sm btn-primary">Accéder</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Sécurité Informatique</h5>
-                        <p class="text-secondary small mb-2">Dr. Ibrahima SECK</p>
-                        <p class="card-text">Cryptographie, sécurité réseau et protection des données.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-success">En cours</span>
-                            <a href="#" class="btn btn-sm btn-primary">Accéder</a>
+                            <span class="badge bg-success">{{ cours.statut }}</span>
+                            <button class="btn btn-sm btn-primary" (click)="consulterCours(cours)">
+                                <i class="bi bi-download me-1"></i>Consulter
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    <span id="toastMessage"></span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

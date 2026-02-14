@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { jsPDF } from 'jspdf';
 
 declare var bootstrap: any;
 
@@ -19,7 +20,6 @@ export class NotesComponent {
   ];
 
   downloadPDF(): void {
-    const { jsPDF } = (window as any).jspdf;
     const doc = new jsPDF();
     
     doc.setFontSize(18);
