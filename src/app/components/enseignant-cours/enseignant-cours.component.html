@@ -1,0 +1,82 @@
+<main class="container mt-4" role="main">
+  <nav aria-label="Fil d'Ariane" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/dashboard-enseignant">Accueil</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Gérer mes cours</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2"><i class="bi bi-journal-plus text-primary"></i> Gérer mes cours</h1>
+    <button class="btn btn-primary" (click)="openModal()">
+      <i class="bi bi-plus-circle"></i> Nouveau cours
+    </button>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6" *ngFor="let c of cours">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h3 class="h5">{{ c.titre }}</h3>
+          <p class="text-secondary small mb-2">{{ c.code }} - {{ c.niveau }}</p>
+          <p class="mb-2"><i class="bi bi-people"></i> {{ c.nbEtudiants }} étudiants</p>
+          <p class="text-muted small">{{ c.description }}</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" (click)="openModal(c)">
+              <i class="bi bi-pencil"></i> Modifier
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteCours(c.id!)">
+              <i class="bi bi-trash"></i> Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ editMode ? 'Modifier' : 'Nouveau' }} cours</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Titre</label>
+            <input type="text" class="form-control" [(ngModel)]="currentCours.titre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Code</label>
+            <input type="text" class="form-control" [(ngModel)]="currentCours.code" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Niveau</label>
+            <select class="form-select" [(ngModel)]="currentCours.niveau" required>
+              <option value="">Sélectionner</option>
+              <option value="Licence 1">Licence 1</option>
+              <option value="Licence 2">Licence 2</option>
+              <option value="Licence 3">Licence 3</option>
+              <option value="Master 1">Master 1</option>
+              <option value="Master 2">Master 2</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nombre d'étudiants</label>
+            <input type="number" class="form-control" [(ngModel)]="currentCours.nbEtudiants" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" [(ngModel)]="currentCours.description" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button type="button" class="btn btn-primary" (click)="saveCours()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade" [class.show]="showModal" *ngIf="showModal"></div>
+</main>

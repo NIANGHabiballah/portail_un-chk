@@ -31,8 +31,9 @@
             <div class="col-md-3">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <h3 class="h6 text-secondary">Étudiants</h3>
-                        <p class="h3 mb-0 text-primary">1,245</p>
+                        <h3 class="h6 text-secondary">Total Étudiants</h3>
+                        <p class="h3 mb-0 text-primary">{{ stats.etudiants }}</p>
+                        <small class="text-success"><i class="bi bi-arrow-up"></i> +12 ce mois</small>
                     </div>
                 </div>
             </div>
@@ -40,7 +41,8 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <h3 class="h6 text-secondary">Enseignants</h3>
-                        <p class="h3 mb-0 text-success">87</p>
+                        <p class="h3 mb-0 text-success">{{ stats.enseignants }}</p>
+                        <small class="text-muted">Actifs</small>
                     </div>
                 </div>
             </div>
@@ -48,15 +50,17 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <h3 class="h6 text-secondary">Cours actifs</h3>
-                        <p class="h3 mb-0 text-warning">156</p>
+                        <p class="h3 mb-0 text-info">{{ stats.coursActifs }}</p>
+                        <small class="text-muted">Ce semestre</small>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <h3 class="h6 text-secondary">Demandes</h3>
-                        <p class="h3 mb-0 text-danger">23</p>
+                        <h3 class="h6 text-secondary">Demandes en attente</h3>
+                        <p class="h3 mb-0 text-warning">{{ stats.demandesEnAttente }}</p>
+                        <small class="text-danger"><i class="bi bi-exclamation-circle"></i> À traiter</small>
                     </div>
                 </div>
             </div>
@@ -67,7 +71,7 @@
             <h2 class="h4 mb-3">Actions rapides</h2>
             <div class="row g-3">
                 <div class="col-md-4">
-                    <a href="/etudiant" class="card border-0 shadow-sm text-decoration-none">
+                    <a routerLink="/etudiant" class="card border-0 shadow-sm text-decoration-none">
                         <div class="card-body text-center">
                             <i class="bi bi-people fs-1 text-primary mb-2"></i>
                             <h3 class="h6 mb-0">Gérer les utilisateurs</h3>
@@ -75,7 +79,7 @@
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="/administration" class="card border-0 shadow-sm text-decoration-none">
+                    <a routerLink="/administration" class="card border-0 shadow-sm text-decoration-none">
                         <div class="card-body text-center">
                             <i class="bi bi-file-earmark-check fs-1 text-success mb-2"></i>
                             <h3 class="h6 mb-0">Traiter les demandes</h3>
@@ -83,12 +87,78 @@
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="/communication" class="card border-0 shadow-sm text-decoration-none">
+                    <a routerLink="/communication" class="card border-0 shadow-sm text-decoration-none">
                         <div class="card-body text-center">
                             <i class="bi bi-megaphone fs-1 text-warning mb-2"></i>
                             <h3 class="h6 mb-0">Publier une annonce</h3>
                         </div>
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demandes récentes -->
+        <section class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h4 mb-0">Demandes récentes</h2>
+                <a routerLink="/administration" class="btn btn-sm btn-outline-primary">Voir tout</a>
+            </div>
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Étudiant</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let demande of demandesRecentes">
+                                    <td><i class="bi bi-file-text me-2"></i>{{ demande.type }}</td>
+                                    <td>{{ demande.etudiant }}</td>
+                                    <td>{{ demande.date | date:'dd/MM/yyyy' }}</td>
+                                    <td>
+                                        <span class="badge" 
+                                              [class.bg-warning]="demande.statut === 'En attente'"
+                                              [class.bg-success]="demande.statut === 'Traitée'">
+                                            {{ demande.statut }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" *ngIf="demande.statut === 'En attente'">
+                                            Traiter
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activités récentes -->
+        <section class="mb-4">
+            <h2 class="h4 mb-3">Activités récentes</h2>
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0" *ngFor="let activite of activitesRecentes">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi {{ activite.icon }} fs-4 text-{{ activite.color }}"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-0">{{ activite.action }}</p>
+                                    <small class="text-muted">{{ activite.user }} - Il y a quelques minutes</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

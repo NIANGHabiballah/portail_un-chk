@@ -1,0 +1,72 @@
+<main class="container mt-4" role="main">
+  <nav aria-label="Fil d'Ariane" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/dashboard-enseignant">Accueil</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Publier une annonce</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2"><i class="bi bi-megaphone text-warning"></i> Mes annonces</h1>
+    <button class="btn btn-warning" (click)="openModal()">
+      <i class="bi bi-plus-circle"></i> Nouvelle annonce
+    </button>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12" *ngFor="let annonce of annonces">
+      <div class="card border-start border-3 shadow-sm" [ngClass]="getTypeClass(annonce.type)">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <h3 class="h5 mb-2">{{ annonce.titre }}</h3>
+              <p class="mb-2">{{ annonce.contenu }}</p>
+              <small class="text-muted">
+                <i class="bi bi-calendar"></i> {{ annonce.date | date:'dd/MM/yyyy' }}
+              </small>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteAnnonce(annonce.id!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nouvelle annonce</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Titre</label>
+            <input type="text" class="form-control" [(ngModel)]="currentAnnonce.titre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Type</label>
+            <select class="form-select" [(ngModel)]="currentAnnonce.type" required>
+              <option value="info">Information</option>
+              <option value="warning">Avertissement</option>
+              <option value="success">Succès</option>
+              <option value="danger">Urgent</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contenu</label>
+            <textarea class="form-control" [(ngModel)]="currentAnnonce.contenu" rows="4" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button type="button" class="btn btn-warning" (click)="publierAnnonce()">Publier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade" [class.show]="showModal" *ngIf="showModal"></div>
+</main>

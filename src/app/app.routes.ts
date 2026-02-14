@@ -16,6 +16,9 @@ import { NotesComponent } from './components/notes/notes.component';
 import { CoursComponent } from './components/cours/cours.component';
 import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
 import { DashboardEnseignantComponent } from './components/dashboard-enseignant/dashboard-enseignant.component';
+import { EnseignantCoursComponent } from './components/enseignant-cours/enseignant-cours.component';
+import { EnseignantNotesComponent } from './components/enseignant-notes/enseignant-notes.component';
+import { EnseignantAnnoncesComponent } from './components/enseignant-annonces/enseignant-annonces.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -35,5 +38,8 @@ export const routes: Routes = [
   { path: 'devoirs', component: DevoirsComponent },
   { path: 'notes', component: NotesComponent },
   { path: 'cours', component: CoursComponent },
+  { path: 'enseignant/cours', component: EnseignantCoursComponent },
+  { path: 'enseignant/notes', component: EnseignantNotesComponent },
+  { path: 'enseignant/annonces', component: EnseignantAnnoncesComponent },
   { path: '**', redirectTo: 'login' }
 ];

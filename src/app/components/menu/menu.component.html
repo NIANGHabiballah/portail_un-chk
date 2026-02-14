@@ -75,10 +75,26 @@
             </li>
             
             <li class="nav-item" *ngIf="userRole === 'enseignant'">
-              <a class="nav-link" routerLink="/cours" routerLinkActive="active"
-                 aria-label="Mes cours">
-                <i class="bi bi-book me-1" aria-hidden="true"></i>
+              <a class="nav-link" routerLink="/enseignant/cours" routerLinkActive="active"
+                 aria-label="Gérer mes cours">
+                <i class="bi bi-journal-plus me-1" aria-hidden="true"></i>
                 Mes Cours
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'enseignant'">
+              <a class="nav-link" routerLink="/enseignant/notes" routerLinkActive="active"
+                 aria-label="Saisir les notes">
+                <i class="bi bi-clipboard-check me-1" aria-hidden="true"></i>
+                Notes
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'enseignant'">
+              <a class="nav-link" routerLink="/enseignant/annonces" routerLinkActive="active"
+                 aria-label="Publier des annonces">
+                <i class="bi bi-megaphone me-1" aria-hidden="true"></i>
+                Annonces
               </a>
             </li>
             

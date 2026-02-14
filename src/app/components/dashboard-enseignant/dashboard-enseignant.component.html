@@ -28,27 +28,35 @@
 
         <!-- Statistiques -->
         <div class="row g-3 mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <h3 class="h6 text-secondary">Mes Cours</h3>
-                        <p class="h3 mb-0 text-primary">5</p>
+                        <h3 class="h6 text-secondary">Total Étudiants</h3>
+                        <p class="h3 mb-0 text-primary">{{ stats.totalEtudiants }}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <h3 class="h6 text-secondary">Étudiants</h3>
-                        <p class="h3 mb-0 text-success">142</p>
+                        <h3 class="h6 text-secondary">Moyenne Classe</h3>
+                        <p class="h3 mb-0 text-success">{{ stats.moyenneClasse }}/20</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <h3 class="h6 text-secondary">Devoirs à corriger</h3>
-                        <p class="h3 mb-0 text-warning">18</p>
+                        <h3 class="h6 text-secondary">Taux Réussite</h3>
+                        <p class="h3 mb-0 text-info">{{ stats.tauxReussite }}%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="h6 text-secondary">Devoirs en attente</h3>
+                        <p class="h3 mb-0 text-warning">{{ stats.devoirsEnAttente }}</p>
                     </div>
                 </div>
             </div>
@@ -63,9 +71,15 @@
                         <div class="card-body">
                             <h3 class="h5">Interaction Homme-Machine</h3>
                             <p class="text-secondary small">Master 2 - 45 étudiants</p>
+                            <div class="mb-2">
+                                <small class="text-muted">Progression : 75%</small>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar bg-primary" style="width: 75%"></div>
+                                </div>
+                            </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-primary">Gérer</button>
-                                <button class="btn btn-sm btn-outline-primary">Notes</button>
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='/enseignant/cours'">Gérer</button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="window.location.href='/enseignant/notes'">Notes</button>
                             </div>
                         </div>
                     </div>
@@ -75,9 +89,51 @@
                         <div class="card-body">
                             <h3 class="h5">Base de Données Avancées</h3>
                             <p class="text-secondary small">Master 2 - 38 étudiants</p>
+                            <div class="mb-2">
+                                <small class="text-muted">Progression : 60%</small>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar bg-primary" style="width: 60%"></div>
+                                </div>
+                            </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-primary">Gérer</button>
-                                <button class="btn btn-sm btn-outline-primary">Notes</button>
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='/enseignant/cours'">Gérer</button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="window.location.href='/enseignant/notes'">Notes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="h5">Développement Web</h3>
+                            <p class="text-secondary small">Licence 3 - 52 étudiants</p>
+                            <div class="mb-2">
+                                <small class="text-muted">Progression : 85%</small>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='/enseignant/cours'">Gérer</button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="window.location.href='/enseignant/notes'">Notes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="h5">Génie Logiciel</h3>
+                            <p class="text-secondary small">Master 1 - 41 étudiants</p>
+                            <div class="mb-2">
+                                <small class="text-muted">Progression : 70%</small>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar bg-info" style="width: 70%"></div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='/enseignant/cours'">Gérer</button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="window.location.href='/enseignant/notes'">Notes</button>
                             </div>
                         </div>
                     </div>
@@ -90,26 +146,26 @@
             <h2 class="h4 mb-3">Actions rapides</h2>
             <div class="row g-3">
                 <div class="col-md-4">
-                    <a href="/cours" class="card border-0 shadow-sm text-decoration-none">
+                    <a routerLink="/enseignant/cours" class="card border-0 shadow-sm text-decoration-none">
                         <div class="card-body text-center">
-                            <i class="bi bi-book fs-1 text-primary mb-2"></i>
-                            <h3 class="h6 mb-0">Mes cours</h3>
+                            <i class="bi bi-journal-plus fs-1 text-primary mb-2"></i>
+                            <h3 class="h6 mb-0">Gérer mes cours</h3>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="/devoirs" class="card border-0 shadow-sm text-decoration-none">
+                    <a routerLink="/enseignant/notes" class="card border-0 shadow-sm text-decoration-none">
                         <div class="card-body text-center">
-                            <i class="bi bi-pencil-square fs-1 text-warning mb-2"></i>
-                            <h3 class="h6 mb-0">Devoirs</h3>
+                            <i class="bi bi-clipboard-check fs-1 text-success mb-2"></i>
+                            <h3 class="h6 mb-0">Saisir les notes</h3>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="/communication" class="card border-0 shadow-sm text-decoration-none">
+                    <a routerLink="/enseignant/annonces" class="card border-0 shadow-sm text-decoration-none">
                         <div class="card-body text-center">
-                            <i class="bi bi-chat-dots fs-1 text-success mb-2"></i>
-                            <h3 class="h6 mb-0">Messages</h3>
+                            <i class="bi bi-megaphone fs-1 text-warning mb-2"></i>
+                            <h3 class="h6 mb-0">Publier une annonce</h3>
                         </div>
                     </a>
                 </div>

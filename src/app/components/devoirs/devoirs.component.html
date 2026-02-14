@@ -30,7 +30,7 @@
                         <p class="card-text">Créer un prototype interactif sur Figma pour une application mobile.</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-danger"><i class="bi bi-clock me-1"></i>Date limite: 20/02/2026</small>
-                            <button class="btn btn-sm btn-warning">Soumettre</button>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#submitModal" (click)="selectDevoir(devoirs[0])">Soumettre</button>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                         <p class="card-text">Optimisation de requêtes SQL et indexation.</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-danger"><i class="bi bi-clock me-1"></i>Date limite: 25/02/2026</small>
-                            <button class="btn btn-sm btn-warning">Soumettre</button>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#submitModal" (click)="selectDevoir(devoirs[1])">Soumettre</button>
                         </div>
                     </div>
                 </div>
@@ -71,6 +71,47 @@
             </div>
         </div>
     </main>
+    
+    <!-- Modal Soumission Devoir -->
+    <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="submitModalLabel">Soumettre un devoir</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Devoir</label>
+                        <p>{{ selectedDevoir?.titre }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fileInput" class="form-label">Fichier à soumettre</label>
+                        <input type="file" class="form-control" id="fileInput" (change)="onFileSelected($event)">
+                        <small class="text-secondary">Formats acceptés: PDF, DOC, DOCX, ZIP</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" (click)="submitDevoir()">Soumettre</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    <span id="toastMessage"></span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

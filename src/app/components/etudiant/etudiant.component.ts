@@ -39,6 +39,25 @@ export class EtudiantComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEtudiants();
+    this.loadAutoSave();
+    this.setupAutoSave();
+  }
+
+  loadAutoSave(): void {
+    const saved = localStorage.getItem('etudiantFormDraft');
+    if (saved) {
+      this.etudiantForm.patchValue(JSON.parse(saved));
+    }
+  }
+
+  setupAutoSave(): void {
+    this.etudiantForm.valueChanges.subscribe(value => {
+      localStorage.setItem('etudiantFormDraft', JSON.stringify(value));
+    });
+  }
+
+  clearAutoSave(): void {
+    localStorage.removeItem('etudiantFormDraft');
   }
 
   loadEtudiants(): void {
@@ -79,10 +98,10 @@ export class EtudiantComponent implements OnInit {
   }
 
   resetForm(): void {
-    console.log('resetForm appelé');
     this.etudiantForm.reset();
     this.formStep = 1;
     this.isEditMode = false;
+    this.clearAutoSave();
   }
 
   saveEtudiant(): void {
@@ -95,6 +114,7 @@ export class EtudiantComponent implements OnInit {
           this.showToast('Étudiant modifié avec succès');
           this.loadEtudiants();
           this.resetForm();
+          this.clearAutoSave();
           this.isSaving = false;
           const modalElement = document.getElementById('etudiantModal');
           const modal = bootstrap.Modal.getInstance(modalElement);
@@ -112,6 +132,7 @@ export class EtudiantComponent implements OnInit {
           this.showToast('Étudiant ajouté avec succès');
           this.loadEtudiants();
           this.resetForm();
+          this.clearAutoSave();
           this.isSaving = false;
           const modalElement = document.getElementById('etudiantModal');
           const modal = bootstrap.Modal.getInstance(modalElement);
