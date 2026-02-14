@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-formations',
@@ -6,20 +8,28 @@ import { Component } from '@angular/core';
   templateUrl: './formations.component.html',
   styleUrl: './formations.component.css'
 })
-export class FormationsComponent {
+export class FormationsComponent implements AfterViewInit {
   
-ngOnInit(): void {
-  document.addEventListener('DOMContentLoaded', () => {
-    // Ensure Bootstrap tabs are initialized
-    const tabTriggerList = Array.from(document.querySelectorAll<HTMLButtonElement>('#formationTabs button'));
-    tabTriggerList.forEach((tabTriggerEl) => {
-      // @ts-ignore: Assuming bootstrap is globally available
-      const tabTrigger = new (window as any).bootstrap.Tab(tabTriggerEl);
-      tabTriggerEl.addEventListener('click', (event: Event) => {
-        event.preventDefault();
-        tabTrigger.show();
+  ngAfterViewInit(): void {
+    const tabButtons = document.querySelectorAll('#formationTabs button');
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = (button as HTMLElement).getAttribute('data-bs-target');
+        if (target) {
+          document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('show', 'active');
+          });
+          document.querySelectorAll('#formationTabs button').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          button.classList.add('active');
+          const targetPane = document.querySelector(target);
+          if (targetPane) {
+            targetPane.classList.add('show', 'active');
+          }
+        }
       });
     });
-  });
-}
+  }
 }

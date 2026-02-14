@@ -1,47 +1,295 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="form-container">
-          <h3 class="text-center text-primary mb-4">Inscription</h3>
-          <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-            <div class="mb-3">
-              <label for="email" class="form-label">Adresse Email</label>
-              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Entrez votre email" required>
-              <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
-                Veuillez entrer une adresse email valide.
+  <div class="container-fluid">
+    <div class="row justify-content-center align-items-center min-vh-100">
+      <div class="col-12">
+        <div class="card shadow-lg border-0">
+          <div class="card-body p-5">
+            <!-- Logo et titre -->
+            <div class="text-center mb-4">
+              <img src="Logo-UN-CHK.png" alt="Logo Université Cheikh Hamidou Kane" style="height: 60px;" class="mb-3">
+              <h2 class="text-primary mb-2">Créer un compte</h2>
+              <p class="text-dark">Rejoignez la communauté UN-CHK</p>
+            </div>
+
+            <!-- Barre de progression -->
+            <div class="progress mb-4" style="height: 4px;" role="progressbar" aria-label="Progression de l'inscription" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar bg-primary" [style.width]="currentStep === 1 ? '50%' : '100%'"></div>
+            </div>
+
+            <!-- Formulaire multi-étapes -->
+            <form [formGroup]="registerForm" (ngSubmit)="onRegister()" role="form" aria-label="Formulaire d'inscription">
+              
+              <!-- Étape 1 : Informations de connexion -->
+              <div *ngIf="currentStep === 1" class="step-content">
+                <h3 class="h5 mb-3 text-center">Étape 1/2 : Informations de connexion</h3>
+                
+                <!-- Email -->
+                <div class="mb-3">
+                  <label for="email" class="form-label required">Adresse Email</label>
+                  <div class="input-group">
+                    <span class="input-group-text" aria-hidden="true">
+                      <i class="bi bi-envelope"></i>
+                    </span>
+                    <input 
+                      type="email" 
+                      class="form-control" 
+                      id="email" 
+                      formControlName="email" 
+                      placeholder="exemple@unchk.edu.sn"
+                      [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                      aria-required="true"
+                      aria-describedby="emailError emailHelp"
+                      autocomplete="email"
+                    >
+                  </div>
+                  <small id="emailHelp" class="form-text text-secondary">
+                    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                    Utilisez votre email universitaire
+                  </small>
+                  <div 
+                    *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" 
+                    class="invalid-feedback d-block"
+                    id="emailError"
+                    role="alert"
+                  >
+                    <i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>
+                    Veuillez entrer une adresse email valide.
+                  </div>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="mb-3">
+                  <label for="password" class="form-label required">Mot de Passe</label>
+                  <div class="input-group">
+                    <span class="input-group-text" aria-hidden="true">
+                      <i class="bi bi-lock"></i>
+                    </span>
+                    <input 
+                      type="password" 
+                      class="form-control" 
+                      id="password" 
+                      formControlName="password" 
+                      placeholder="Minimum 8 caractères"
+                      [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                      aria-required="true"
+                      aria-describedby="passwordError passwordStrength"
+                      autocomplete="new-password"
+                    >
+                  </div>
+                  <!-- Indicateur de force du mot de passe -->
+                  <div class="password-strength mt-2" id="passwordStrength">
+                    <div class="d-flex gap-1">
+                      <div class="flex-fill bg-secondary" style="height: 4px; border-radius: 2px;"></div>
+                      <div class="flex-fill bg-secondary" style="height: 4px; border-radius: 2px;"></div>
+                      <div class="flex-fill bg-secondary" style="height: 4px; border-radius: 2px;"></div>
+                      <div class="flex-fill bg-secondary" style="height: 4px; border-radius: 2px;"></div>
+                    </div>
+                    <small class="text-secondary">
+                      <i class="bi bi-shield-check me-1" aria-hidden="true"></i>
+                      Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre
+                    </small>
+                  </div>
+                  <div 
+                    *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" 
+                    class="invalid-feedback d-block"
+                    id="passwordError"
+                    role="alert"
+                  >
+                    <i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>
+                    Le mot de passe doit contenir au moins 8 caractères.
+                  </div>
+                </div>
+
+                <!-- Confirmation mot de passe -->
+                <div class="mb-3">
+                  <label for="confirmPassword" class="form-label required">Confirmer le Mot de Passe</label>
+                  <div class="input-group">
+                    <span class="input-group-text" aria-hidden="true">
+                      <i class="bi bi-lock-fill"></i>
+                    </span>
+                    <input 
+                      type="password" 
+                      class="form-control" 
+                      id="confirmPassword" 
+                      formControlName="confirmPassword" 
+                      placeholder="Confirmez votre mot de passe"
+                      [class.is-invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+                      aria-required="true"
+                      aria-describedby="confirmPasswordError"
+                      autocomplete="new-password"
+                    >
+                  </div>
+                  <div 
+                    *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" 
+                    class="invalid-feedback d-block"
+                    id="confirmPasswordError"
+                    role="alert"
+                  >
+                    <i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>
+                    Les mots de passe ne correspondent pas.
+                  </div>
+                </div>
+
+                <!-- Bouton suivant -->
+                <div class="d-grid gap-2">
+                  <button 
+                    type="button" 
+                    class="btn btn-primary btn-lg"
+                    (click)="nextStep()"
+                    [disabled]="!isStep1Valid()"
+                    aria-label="Passer à l'étape suivante"
+                  >
+                    Suivant <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Mot de Passe</label>
-              <input type="password" class="form-control" id="password" formControlName="password" placeholder="Entrez votre mot de passe" required>
-              <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger">
-                Le mot de passe doit contenir au moins 6 caractères.
+
+              <!-- Étape 2 : Informations personnelles -->
+              <div *ngIf="currentStep === 2" class="step-content">
+                <h3 class="h5 mb-3 text-center">Étape 2/2 : Informations personnelles</h3>
+                
+                <!-- Nom -->
+                <div class="mb-3">
+                  <label for="nom" class="form-label required">Nom</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="nom" 
+                    formControlName="nom" 
+                    placeholder="Votre nom"
+                    [class.is-invalid]="registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched"
+                    aria-required="true"
+                    autocomplete="family-name"
+                  >
+                  <div 
+                    *ngIf="registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched" 
+                    class="invalid-feedback"
+                    role="alert"
+                  >
+                    Le nom est obligatoire.
+                  </div>
+                </div>
+
+                <!-- Prénom -->
+                <div class="mb-3">
+                  <label for="prenom" class="form-label required">Prénom</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="prenom" 
+                    formControlName="prenom" 
+                    placeholder="Votre prénom"
+                    [class.is-invalid]="registerForm.get('prenom')?.invalid && registerForm.get('prenom')?.touched"
+                    aria-required="true"
+                    autocomplete="given-name"
+                  >
+                  <div 
+                    *ngIf="registerForm.get('prenom')?.invalid && registerForm.get('prenom')?.touched" 
+                    class="invalid-feedback"
+                    role="alert"
+                  >
+                    Le prénom est obligatoire.
+                  </div>
+                </div>
+
+                <!-- Rôle -->
+                <div class="mb-3">
+                  <label for="role" class="form-label required">Vous êtes</label>
+                  <select 
+                    class="form-select" 
+                    id="role" 
+                    formControlName="role"
+                    [class.is-invalid]="registerForm.get('role')?.invalid && registerForm.get('role')?.touched"
+                    aria-required="true"
+                  >
+                    <option value="" selected disabled>Sélectionnez votre rôle</option>
+                    <option value="etudiant">Étudiant(e)</option>
+                    <option value="enseignant">Enseignant(e)</option>
+                    <option value="administration">Personnel administratif</option>
+                  </select>
+                  <div 
+                    *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched" 
+                    class="invalid-feedback"
+                    role="alert"
+                  >
+                    Veuillez sélectionner votre rôle.
+                  </div>
+                </div>
+
+                <!-- Conditions d'utilisation -->
+                <div class="mb-3 form-check">
+                  <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    id="acceptTerms"
+                    formControlName="acceptTerms"
+                    [class.is-invalid]="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched"
+                    aria-required="true"
+                    aria-describedby="termsError"
+                  >
+                  <label class="form-check-label" for="acceptTerms">
+                    J'accepte les <a href="#" class="text-primary">conditions d'utilisation</a> et la <a href="#" class="text-primary">politique de confidentialité</a>
+                  </label>
+                  <div 
+                    *ngIf="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched" 
+                    class="invalid-feedback d-block"
+                    id="termsError"
+                    role="alert"
+                  >
+                    Vous devez accepter les conditions d'utilisation.
+                  </div>
+                </div>
+
+                <!-- Message d'erreur global -->
+                <div 
+                  *ngIf="errorMessage" 
+                  class="alert alert-danger d-flex align-items-center" 
+                  role="alert"
+                  aria-live="polite"
+                >
+                  <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+                  <div>{{ errorMessage }}</div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="d-flex gap-2">
+                  <button 
+                    type="button" 
+                    class="btn btn-secondary flex-fill"
+                    (click)="previousStep()"
+                    aria-label="Retour à l'étape précédente"
+                  >
+                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i> Retour
+                  </button>
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary flex-fill"
+                    [disabled]="registerForm.invalid"
+                    aria-label="Créer mon compte"
+                  >
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i> Créer mon compte
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <label for="confirmPassword" class="form-label">Confirmez le Mot de Passe</label>
-              <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirmez votre mot de passe" required>
-              <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="text-danger">
-                Veuillez confirmer votre mot de passe.
-              </div>
-            </div>
-            <div *ngIf="errorMessage" class="text-danger mb-3">
-              {{ errorMessage }}
-            </div>
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-primary btn-custom">S'inscrire</button>
-            </div>
-          </form>
-          <p class="text-center mt-3">
-            Pas encore inscrit ? <a [routerLink]="['/login']" class="btn btn-link">Se connecter</a>
-          </p>
+            </form>
+
+            <!-- Lien connexion -->
+            <hr class="my-4">
+            <p class="text-center mb-0">
+              Vous avez déjà un compte ? 
+              <a [routerLink]="['/login']" class="text-primary fw-bold text-decoration-none">
+                Se connecter
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Aide -->
+        <div class="text-center mt-3">
+          <small class="text-secondary">
+            <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+            Besoin d'aide ? <a href="#" class="text-primary">Contactez le support</a>
+          </small>
         </div>
       </div>
-</body>
-</html>
+    </div>
+  </div>

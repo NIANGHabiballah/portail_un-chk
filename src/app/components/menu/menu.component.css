@@ -1,37 +1,33 @@
 /* Style pour le logo */
 .navbar-brand {
-  float: left; /* Le logo reste à gauche */
-  margin-right: auto; /* Sépare le logo des autres éléments */
+  float: left;
+  margin-right: auto;
+  margin-left: 50px;
 }
 
 /* Style pour les autres éléments du menu */
 .navbar-nav {
   display: flex;
-  justify-content: flex-end; /* Aligne les éléments à droite */
-  margin-left: auto; /* Pousse les éléments vers la droite */
+  justify-content: flex-end;
+  margin-left: auto;
   padding-right: 0;
 }
 
 /* Style pour les liens du menu */
 .navbar-nav .nav-link {
-  margin-left: 15px; /* Ajoute un espacement entre les liens */
+  margin-left: 15px;
 }
 
 /* Style pour l'icône utilisateur */
 .nav-item:last-child {
-  margin-right: 25px; /* Ajoute un espacement entre l'icône utilisateur et la marge de droite */
+  margin-right: 25px;
 }
-
-/* .navbar-nav .nav-link {
-  color: black; Couleur verte pour le texte 
-} */
-
 
 /* Style pour le bouton actif du menu */
 .navbar-nav .nav-link.active {
-  color: #27A755; /* Couleur verte pour le texte */
-  font-weight: bold; /* Met le texte en gras */
-  border-bottom: 2px solid #27A755; /* Ajoute une bordure verte en bas */
+  color: #27A755;
+  font-weight: bold;
+  border-bottom: 2px solid #27A755;
 }
 
 /* Style pour le hover des liens */
@@ -46,14 +42,89 @@
   font-size: 20px;
 }
 
-/* Style pour le logo */
-.navbar-brand {
-  float: left; /* Le logo reste à gauche */
-  margin-right: auto; /* Sépare le logo des autres éléments */
-  margin-left: 50px; /* Ajoute un espacement à gauche pour pousser le logo à droite */
-}
-
 /* Ajoute une ombre au fond du menu */
 .navbar {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile sous le menu */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767.98px) {
+  .navbar {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+}
+
+/* Dropdown au hover */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu {
+  margin-top: 0;
+}
+
+/* Menu mobile avec overlay */
+@media (max-width: 991px) {
+  .navbar-brand {
+    margin-left: 0;
+  }
+  
+  body.menu-open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+  }
+  
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease;
+    z-index: 1050;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .navbar-collapse.show {
+    right: 0 !important;
+  }
+  
+  .btn-close {
+    margin-left: auto;
+    display: block;
+  }
+  
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .navbar-nav .nav-link {
+    margin-left: 0;
+    padding: 12px 0;
+    width: 100%;
+    color: #333 !important;
+    font-size: 16px;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    background: #f8f9fa;
+    padding-left: 10px;
+  }
+  
+  .nav-item:last-child {
+    margin-right: 0;
+  }
 }

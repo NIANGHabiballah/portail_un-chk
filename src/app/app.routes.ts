@@ -8,16 +8,32 @@ import { FormationsComponent } from './components/formations/formations.componen
 import { EtudiantComponent } from './components/etudiant/etudiant.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { LoginComponent } from './components/auth/login/login.component';
+import { ChangerMotDePasseComponent } from './components/changer-mot-de-passe/changer-mot-de-passe.component';
+import { ParametresComponent } from './components/parametres/parametres.component';
+import { AideComponent } from './components/aide/aide.component';
+import { DevoirsComponent } from './components/devoirs/devoirs.component';
+import { NotesComponent } from './components/notes/notes.component';
+import { CoursComponent } from './components/cours/cours.component';
+import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
+import { DashboardEnseignantComponent } from './components/dashboard-enseignant/dashboard-enseignant.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirection par défaut vers la page de connexion
-  { path: 'login', component: LoginComponent }, // Route pour la page de connexion
-  { path: 'register', component: RegisterComponent }, // Route pour la page d'inscription
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard-admin', component: DashboardAdminComponent },
+  { path: 'dashboard-enseignant', component: DashboardEnseignantComponent },
   { path: 'communication', component: CommunicationComponent },
   { path: 'administration', component: AdministrationComponent },
   { path: 'appui-insertion', component: AppuiInsertionComponent },
   { path: 'formations', component: FormationsComponent },
   { path: 'etudiant', component: EtudiantComponent },
-  { path: '**', redirectTo: 'login' } // Redirection pour les routes inconnues
+  { path: 'changer-mot-de-passe', component: ChangerMotDePasseComponent },
+  { path: 'parametres', component: ParametresComponent },
+  { path: 'aide', component: AideComponent },
+  { path: 'devoirs', component: DevoirsComponent },
+  { path: 'notes', component: NotesComponent },
+  { path: 'cours', component: CoursComponent },
+  { path: '**', redirectTo: 'login' }
 ];

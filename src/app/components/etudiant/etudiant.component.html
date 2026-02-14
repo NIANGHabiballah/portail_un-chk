@@ -1,106 +1,442 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Etudiant</title>
+    <title>Gestion des Étudiants - Portail UN-CHK</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
 </head>
 <body>
-    <!-- etudiant.component.html -->
-    <div class="container mt-5">
-      <div #formSection>
-      <h3 class="text-primary">Profil Étudiant</h3>
-      <form [formGroup]="etudiantForm" (ngSubmit)="saveEtudiant()">
-        <div class="row g-3">
-          <div class="col-md-4">
-            <label>ID Étudiant / INE</label>
-            <input type="text" class="form-control" formControlName="id" readonly>
-          </div>
-          <div class="col-md-4">
-            <label>Nom</label>
-            <input type="text" class="form-control" formControlName="nom">
-          </div>
-          <div class="col-md-4">
-            <label>Prénom</label>
-            <input type="text" class="form-control" formControlName="prenom">
-          </div>
+    <main class="container" role="main" id="main-content">
+        <!-- Fil d'Ariane -->
+        <nav aria-label="Fil d'Ariane" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard-admin">Accueil Admin</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Étudiants</li>
+            </ol>
+        </nav>
+
+        <!-- En-tête avec bouton d'ajout -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">
+                    <i class="bi bi-people text-primary me-2" aria-hidden="true"></i>
+                    Gestion des Étudiants
+                </h1>
+                <p class="text-secondary mb-0">Gérez les profils et informations des étudiants</p>
+            </div>
+            <button 
+                class="btn btn-primary" 
+                data-bs-toggle="modal" 
+                data-bs-target="#etudiantModal"
+                (click)="resetForm()"
+                aria-label="Ajouter un nouvel étudiant"
+            >
+                <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+                Ajouter un étudiant
+            </button>
         </div>
-        <div class="row g-3 mt-3">
-          <div class="col-md-4">
-            <label>Date de naissance</label>
-            <input type="date" class="form-control" formControlName="dateNaissance">
-          </div>
-          <div class="col-md-4">
-            <label>Formation</label>
-            <input type="text" class="form-control" formControlName="formation">
-          </div>
-          <div class="col-md-4">
-            <label>Promo</label>
-            <input type="text" class="form-control" formControlName="promo">
-          </div>
+
+        <!-- Barre de recherche et filtres -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text" aria-hidden="true">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                placeholder="Rechercher un étudiant..."
+                                aria-label="Rechercher un étudiant"
+                            >
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" aria-label="Filtrer par formation">
+                            <option selected>Toutes les formations</option>
+                            <option value="1">Master Ingénierie Logicielle</option>
+                            <option value="2">Master GRH</option>
+                            <option value="3">Licence Informatique</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" aria-label="Filtrer par promo">
+                            <option selected>Toutes les promos</option>
+                            <option value="1">P7</option>
+                            <option value="2">P6</option>
+                            <option value="3">P5</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-success w-100 d-flex align-items-center justify-content-center" (click)="exportToCSV()" aria-label="Exporter la liste en CSV">
+                            <i class="bi bi-download me-2" aria-hidden="true"></i>
+                            <span>Export CSV</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row g-3 mt-3">
-          <div class="col-md-4">
-            <label>Année de début</label>
-            <input type="number" class="form-control" formControlName="anneeDebut">
-          </div>
-          <div class="col-md-4">
-            <label>Année de sortie</label>
-            <input type="number" class="form-control" formControlName="anneeSortie">
-          </div>
-          <div class="col-md-4">
-            <label>Diplôme</label>
-            <input type="text" class="form-control" formControlName="diplome">
-          </div>
+
+        <!-- Statistiques rapides -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people fs-1 text-primary mb-2" aria-hidden="true"></i>
+                        <h3 class="h4 mb-0">{{ etudiants.length }}</h3>
+                        <p class="text-secondary small mb-0">Total étudiants</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-person-plus fs-1 text-success mb-2" aria-hidden="true"></i>
+                        <h3 class="h4 mb-0">12</h3>
+                        <p class="text-secondary small mb-0">Nouveaux ce mois</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-mortarboard fs-1 text-info mb-2" aria-hidden="true"></i>
+                        <h3 class="h4 mb-0">5</h3>
+                        <p class="text-secondary small mb-0">Formations actives</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-graph-up fs-1 text-warning mb-2" aria-hidden="true"></i>
+                        <h3 class="h4 mb-0">87%</h3>
+                        <p class="text-secondary small mb-0">Taux de réussite</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group mt-3">
-          <label>Autres Formations</label>
-          <textarea class="form-control" formControlName="autresFormations"></textarea>
+
+        <!-- Overlay de chargement -->
+        <div class="loading-overlay" *ngIf="isLoading">
+            <div class="spinner"></div>
         </div>
-        <button class="btn btn-success mt-3" type="submit">Enregistrer</button>
-      </form>
+
+        <!-- Tableau des étudiants (version desktop) -->
+        <div class="card border-0 shadow-sm d-none d-md-block">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" aria-label="Liste des étudiants">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénom</th>
+                                <th scope="col">Formation</th>
+                                <th scope="col">Promo</th>
+                                <th scope="col">Année</th>
+                                <th scope="col" class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let etudiant of etudiants">
+                                <td class="fw-semibold">{{ etudiant.nom }}</td>
+                                <td>{{ etudiant.prenom }}</td>
+                                <td>
+                                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                                        {{ etudiant.formation }}
+                                    </span>
+                                </td>
+                                <td>{{ etudiant.promo }}</td>
+                                <td>{{ etudiant.anneeDebut }} - {{ etudiant.anneeSortie }}</td>
+                                <td class="text-end">
+                                    <div class="btn-group" role="group" [attr.aria-label]="'Actions pour ' + etudiant.nom + ' ' + etudiant.prenom">
+                                        <button 
+                                            class="btn btn-sm btn-outline-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailsModal"
+                                            (click)="viewDetails(etudiant)"
+                                            [attr.aria-label]="'Voir les détails de ' + etudiant.nom + ' ' + etudiant.prenom"
+                                        >
+                                            <i class="bi bi-eye" aria-hidden="true"></i>
+                                        </button>
+                                        <button 
+                                            class="btn btn-sm btn-outline-secondary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#etudiantModal"
+                                            (click)="editEtudiant(etudiant)"
+                                            [attr.aria-label]="'Modifier ' + etudiant.nom + ' ' + etudiant.prenom"
+                                        >
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        </button>
+                                        <button 
+                                            class="btn btn-sm btn-outline-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            (click)="selectForDelete(etudiant)"
+                                            [attr.aria-label]="'Supprimer ' + etudiant.nom + ' ' + etudiant.prenom"
+                                        >
+                                            <i class="bi bi-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vue mobile (cards) -->
+        <div class="d-md-none">
+            <div class="card border-0 shadow-sm mb-3" *ngFor="let etudiant of etudiants">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h3 class="h6 mb-1 fw-bold">{{ etudiant.nom }} {{ etudiant.prenom }}</h3>
+                            <span class="badge bg-primary bg-opacity-10 text-primary">{{ etudiant.formation }}</span>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-label="Menu d'actions">
+                                <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailsModal" (click)="viewDetails(etudiant); $event.preventDefault()">
+                                    <i class="bi bi-eye me-2" aria-hidden="true"></i>Voir
+                                </a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#etudiantModal" (click)="editEtudiant(etudiant); $event.preventDefault()">
+                                    <i class="bi bi-pencil me-2" aria-hidden="true"></i>Modifier
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="selectForDelete(etudiant); $event.preventDefault()">
+                                    <i class="bi bi-trash me-2" aria-hidden="true"></i>Supprimer
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="small text-secondary">
+                        <div><i class="bi bi-calendar me-1" aria-hidden="true"></i>Promo: {{ etudiant.promo }}</div>
+                        <div><i class="bi bi-clock me-1" aria-hidden="true"></i>{{ etudiant.anneeDebut }} - {{ etudiant.anneeSortie }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Ajout/Modification Étudiant -->
+    <div class="modal fade" id="etudiantModal" tabindex="-1" aria-labelledby="etudiantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5" id="etudiantModalLabel">
+                        <i class="bi bi-person-plus text-primary me-2" aria-hidden="true"></i>
+                        {{ isEditMode ? 'Modifier' : 'Ajouter' }} un étudiant
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <form [formGroup]="etudiantForm" (ngSubmit)="saveEtudiant()">
+                    <div class="modal-body">
+                        <!-- Barre de progression -->
+                        <div class="progress mb-4" style="height: 4px;">
+                            <div class="progress-bar" [style.width]="formStep === 1 ? '50%' : '100%'"></div>
+                        </div>
+
+                        <!-- Étape 1 -->
+                        <div *ngIf="formStep === 1">
+                            <h3 class="h6 mb-3">Étape 1/2 : Informations essentielles</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nom" class="form-label required">Nom</label>
+                                    <input type="text" class="form-control" id="nom" formControlName="nom" 
+                                           [class.is-invalid]="etudiantForm.get('nom')?.invalid && etudiantForm.get('nom')?.touched">
+                                    <div class="invalid-feedback">Le nom est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="prenom" class="form-label required">Prénom</label>
+                                    <input type="text" class="form-control" id="prenom" formControlName="prenom"
+                                           [class.is-invalid]="etudiantForm.get('prenom')?.invalid && etudiantForm.get('prenom')?.touched">
+                                    <div class="invalid-feedback">Le prénom est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="formation" class="form-label required">Formation</label>
+                                    <select class="form-select" id="formation" formControlName="formation"
+                                            [class.is-invalid]="etudiantForm.get('formation')?.invalid && etudiantForm.get('formation')?.touched">
+                                        <option value="" disabled>Sélectionnez une formation</option>
+                                        <option value="Master IL">Master Ingénierie Logicielle</option>
+                                        <option value="Master GRH">Master GRH</option>
+                                        <option value="Licence Info">Licence Informatique</option>
+                                    </select>
+                                    <div class="invalid-feedback">La formation est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="promo" class="form-label required">Promo</label>
+                                    <input type="text" class="form-control" id="promo" formControlName="promo" placeholder="Ex: P7"
+                                           [class.is-invalid]="etudiantForm.get('promo')?.invalid && etudiantForm.get('promo')?.touched">
+                                    <div class="invalid-feedback">La promo est obligatoire.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Étape 2 -->
+                        <div *ngIf="formStep === 2">
+                            <h3 class="h6 mb-3">Étape 2/2 : Informations complémentaires</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="dateNaissance" class="form-label">Date de naissance</label>
+                                    <input type="date" class="form-control" id="dateNaissance" formControlName="dateNaissance">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="diplome" class="form-label">Diplôme</label>
+                                    <input type="text" class="form-control" id="diplome" formControlName="diplome">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="anneeDebut" class="form-label">Année de début</label>
+                                    <input type="number" class="form-control" id="anneeDebut" formControlName="anneeDebut" placeholder="2024">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="anneeSortie" class="form-label">Année de sortie</label>
+                                    <input type="number" class="form-control" id="anneeSortie" formControlName="anneeSortie" placeholder="2026">
+                                </div>
+                                <div class="col-12">
+                                    <label for="autresFormations" class="form-label">Autres formations</label>
+                                    <textarea class="form-control" id="autresFormations" formControlName="autresFormations" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-2" aria-hidden="true"></i>Annuler
+                        </button>
+                        <button *ngIf="formStep === 1" type="button" class="btn btn-primary" (click)="nextFormStep()" [disabled]="!isStep1Valid()">
+                            Suivant <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="formStep === 2" type="button" class="btn btn-secondary" (click)="previousFormStep()">
+                            <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retour
+                        </button>
+                        <button *ngIf="formStep === 2" type="submit" class="btn btn-success" [disabled]="etudiantForm.invalid || isSaving" [class.loading]="isSaving">
+                            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Confirmation Suppression -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger bg-opacity-10">
+                    <h2 class="modal-title h5 text-danger" id="deleteModalLabel">
+                        <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+                        Confirmer la suppression
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger d-flex align-items-start" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 me-3" aria-hidden="true"></i>
+                        <div>
+                            <p class="mb-2 fw-bold">Êtes-vous sûr de vouloir supprimer cet étudiant ?</p>
+                            <div class="bg-white p-3 rounded border">
+                                <strong>{{ selectedEtudiant?.nom }} {{ selectedEtudiant?.prenom }}</strong><br>
+                                <small class="text-secondary">{{ selectedEtudiant?.formation }} - {{ selectedEtudiant?.promo }}</small>
+                            </div>
+                            <p class="text-danger small mt-3 mb-0">
+                                <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                                <strong>Attention :</strong> Cette action est irréversible. Toutes les données associées seront définitivement supprimées.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2" aria-hidden="true"></i>Annuler
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="confirmDelete()" data-bs-dismiss="modal">
+                        <i class="bi bi-trash me-2" aria-hidden="true"></i>Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Détails Étudiant -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5" id="detailsModalLabel">
+                        <i class="bi bi-person-circle text-primary me-2" aria-hidden="true"></i>
+                        Détails de l'étudiant
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3" *ngIf="selectedEtudiant">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Nom</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.nom }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Prénom</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.prenom }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Formation</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.formation }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Promo</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.promo }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Année de début</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.anneeDebut || 'Non renseigné' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Année de sortie</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.anneeSortie || 'Non renseigné' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Date de naissance</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.dateNaissance || 'Non renseigné' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Diplôme</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.diplome || 'Non renseigné' }}</p>
+                        </div>
+                        <div class="col-12" *ngIf="selectedEtudiant.autresFormations">
+                            <label class="form-label fw-bold">Autres formations</label>
+                            <p class="form-control-plaintext">{{ selectedEtudiant.autresFormations }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2" aria-hidden="true"></i>Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    <span id="toastMessage"></span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+            </div>
+        </div>
     </div>
     
-      <h3 class="mt-5">Liste des Étudiants</h3>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Date de Naissance</th>
-            <th>Formation</th>
-            <th>Promo</th>
-            <th>Année de Début</th>
-            <th>Année de Sortie</th>
-            <th>Diplôme</th>
-            <th>Autres Formations</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let etudiant of etudiants">
-            <td>{{ etudiant.id }}</td>
-            <td>{{ etudiant.nom }}</td>
-            <td>{{ etudiant.prenom }}</td>
-            <td>{{ etudiant.dateNaissance }}</td>
-            <td>{{ etudiant.formation }}</td>
-            <td>{{ etudiant.promo }}</td>
-            <td>{{ etudiant.anneeDebut }}</td>
-            <td>{{ etudiant.anneeSortie }}</td>
-            <td>{{ etudiant.diplome }}</td>
-            <td>{{ etudiant.autresFormations }}</td>
-            <td>
-              <!-- Icône pour modifier -->
-              <i class="bi bi-pencil-square text-primary me-3" style="cursor: pointer;" (click)="editEtudiant(etudiant)"></i>
-              <!-- Icône pour supprimer -->
-              <i class="bi bi-trash text-danger" style="cursor: pointer;" (click)="deleteEtudiant(etudiant.id)"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

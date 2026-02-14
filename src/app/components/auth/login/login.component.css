@@ -1,7 +1,11 @@
-body {
-    background-color: #f8f9fa;
-    height: 100vh;
-    margin: 0;
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .container-fluid {
+    min-height: 100vh;
   }
 
   .form-container {
@@ -10,7 +14,6 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 30px;
     width: 100%;
-    max-width: 400px;
     margin: auto;
   }
 
@@ -20,4 +23,65 @@ body {
   
   .form-control {
     border-radius: 10px;
+    font-size: 1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .form-label {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .card {
+    max-width: none;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
+  .btn-lg {
+    font-size: 1.4rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .input-group-text {
+    font-size: 1.3rem;
+  }
+
+  p, small, a {
+    font-size: 1.1rem;
+  }
+
+  .text-secondary {
+    color: #ffffff !important;
+    font-weight: 500;
+  }
+
+  .text-secondary a {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+  }
+
+  .invalid-feedback {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .alert {
+    font-size: 1.1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .form-control::placeholder {
+    font-size: 0.95rem;
+  }
+
+  .form-check-label {
+    font-size: 1rem;
   }

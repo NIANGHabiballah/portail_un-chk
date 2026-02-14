@@ -6,4 +6,8 @@
 }  
 .badge {  
     margin-right: 5px;  
+}
+
+main {
+    padding-top: 80px !important;
 } 

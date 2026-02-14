@@ -1,40 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
-</head>
-<body>
-  <div class="container mt-5">
-    <div class="form-container">
-      <h3 class="text-center text-primary mb-4">Connexion</h3>
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <div class="mb-3">
-          <label for="email" class="form-label">Adresse Email</label>
-          <input type="email" class="form-control" id="email" formControlName="email" placeholder="Entrez votre email" required>
-          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
-            Veuillez entrer une adresse email valide.
+  <div class="container-fluid">
+    <div class="row justify-content-center align-items-center min-vh-100">
+      <div class="col-12">
+        <div class="card shadow-lg border-0">
+          <div class="card-body p-5">
+            <!-- Logo -->
+            <div class="text-center mb-4">
+              <img src="Logo-UN-CHK.png" alt="Logo Université Cheikh Hamidou Kane" style="height: 60px;" class="mb-3">
+              <h2 class="text-primary mb-2">Connexion</h2>
+              <p class="text-dark">Accédez à votre espace personnel</p>
+            </div>
+
+            <!-- Formulaire de connexion -->
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" role="form" aria-label="Formulaire de connexion">
+              
+              <!-- Email -->
+              <div class="mb-3">
+                <label for="email" class="form-label required">Adresse Email</label>
+                <div class="input-group">
+                  <span class="input-group-text" aria-hidden="true">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input 
+                    type="email" 
+                    class="form-control" 
+                    id="email" 
+                    formControlName="email" 
+                    placeholder="exemple@unchk.edu.sn"
+                    [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                    aria-required="true"
+                    aria-describedby="emailError"
+                    autocomplete="email"
+                  >
+                </div>
+                <div 
+                  *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" 
+                  class="invalid-feedback d-block"
+                  id="emailError"
+                  role="alert"
+                >
+                  <i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>
+                  Veuillez entrer une adresse email valide.
+                </div>
+              </div>
+
+              <!-- Mot de passe -->
+              <div class="mb-3">
+                <label for="password" class="form-label required">Mot de Passe</label>
+                <div class="input-group">
+                  <span class="input-group-text" aria-hidden="true">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input 
+                    type="password" 
+                    class="form-control" 
+                    id="password" 
+                    formControlName="password" 
+                    placeholder="Entrez votre mot de passe"
+                    [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                    aria-required="true"
+                    aria-describedby="passwordError"
+                    autocomplete="current-password"
+                  >
+                </div>
+                <div 
+                  *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" 
+                  class="invalid-feedback d-block"
+                  id="passwordError"
+                  role="alert"
+                >
+                  <i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>
+                  Veuillez entrer votre mot de passe.
+                </div>
+              </div>
+
+              <!-- Se souvenir de moi -->
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">
+                  Se souvenir de moi
+                </label>
+              </div>
+
+              <!-- Message d'erreur global -->
+              <div 
+                *ngIf="errorMessage" 
+                class="alert alert-danger d-flex align-items-center" 
+                role="alert"
+                aria-live="polite"
+              >
+                <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+                <div>{{ errorMessage }}</div>
+              </div>
+
+              <!-- Bouton de connexion -->
+              <div class="d-grid gap-2 mb-3">
+                <button 
+                  type="submit" 
+                  class="btn btn-primary btn-lg"
+                  [disabled]="loginForm.invalid"
+                  aria-label="Se connecter au portail"
+                >
+                  <i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>
+                  Se Connecter
+                </button>
+              </div>
+
+              <!-- Mot de passe oublié -->
+              <div class="text-center mb-3">
+                <a href="javascript:void(0)" class="text-primary text-decoration-none">
+                  <i class="bi bi-question-circle me-1" aria-hidden="true"></i>
+                  Mot de passe oublié ?
+                </a>
+              </div>
+
+              <!-- Lien inscription -->
+              <hr>
+              <p class="text-center mb-0">
+                Pas encore inscrit ? 
+                <a [routerLink]="['/register']" class="text-primary fw-bold text-decoration-none">
+                  Créer un compte
+                </a>
+              </p>
+            </form>
+            
+            <!-- Comptes de test -->
+            <div class="mt-4 p-3 bg-light rounded">
+              <h6 class="text-center mb-3"><i class="bi bi-key me-2"></i>Comptes de test</h6>
+              <div class="row g-2 small">
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-body p-2">
+                      <strong class="text-primary">Étudiant</strong>
+                      <div>Email: etudiant&#64;unchk.edu.sn</div>
+                      <div>Mot de passe: etudiant123</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-body p-2">
+                      <strong class="text-success">Enseignant</strong>
+                      <div>Email: enseignant&#64;unchk.edu.sn</div>
+                      <div>Mot de passe: enseignant123</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-body p-2">
+                      <strong class="text-danger">Admin</strong>
+                      <div>Email: admin&#64;unchk.edu.sn</div>
+                      <div>Mot de passe: admin123</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Mot de Passe</label>
-          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Entrez votre mot de passe" required>
-          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
-            Veuillez entrer votre mot de passe.
-          </div>
+
+        <!-- Aide -->
+        <div class="text-center mt-3">
+          <small class="text-secondary">
+            <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+            Besoin d'aide ? <a href="javascript:void(0)" class="text-primary">Contactez le support</a>
+          </small>
         </div>
-        <div *ngIf="errorMessage" class="text-danger mb-3">
-          {{ errorMessage }}
-        </div>
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary btn-custom">Se Connecter</button>
-        </div>
-      </form>
-      <p class="text-center mt-3">
-        Pas encore inscrit ? <a [routerLink]="['/register']" class="btn btn-link">Créer un compte</a>
-      </p>
+      </div>
     </div>
   </div>
-</body>
-</html>

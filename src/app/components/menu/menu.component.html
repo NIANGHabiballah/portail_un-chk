@@ -1,54 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Menu - Portail UN-CHK</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Skip link pour accessibilité -->
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
     
-    <!-- src/app/components/menu/menu.component.html -->  
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <a class="navbar-brand" href="#">
-        <img src="Logo-UN-CHK.png" alt="Logo UN-CHK" style="height: 40px;">
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/communication" routerLinkActive="active">Communication</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/administration" routerLinkActive="active">Administration</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/appui-insertion" routerLinkActive="active">Appui à l'Insertion</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/formations" routerLinkActive="active">Formations</a>
-          </li>
+    <!-- Menu amélioré avec accessibilité et notifications -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" role="navigation" aria-label="Navigation principale">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" [routerLink]="userRole === 'admin' ? '/dashboard-admin' : userRole === 'enseignant' ? '/dashboard-enseignant' : '/dashboard'" aria-label="Retour à l'accueil">
+          <img src="Logo-UN-CHK.png" alt="Logo Université Cheikh Hamidou Kane" style="height: 40px;">
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Ouvrir le menu de navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <button class="btn-close d-lg-none mb-3" aria-label="Fermer le menu" id="closeMenu"></button>
+          <ul class="navbar-nav ms-auto align-items-center">
             <li class="nav-item">
-            <a class="nav-link" routerLink="/etudiant" routerLinkActive="active">
-              <i class="bi bi-person"></i>
-            </a>
-          </li>
-        </ul>
+              <a class="nav-link" [routerLink]="userRole === 'admin' ? '/dashboard-admin' : userRole === 'enseignant' ? '/dashboard-enseignant' : '/dashboard'" routerLinkActive="active" 
+                 aria-label="Tableau de bord">
+                <i class="bi bi-house-door me-1" aria-hidden="true"></i>
+                Dashboard
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'etudiant'">
+              <a class="nav-link" routerLink="/cours" routerLinkActive="active"
+                 aria-label="Mes cours">
+                <i class="bi bi-book me-1" aria-hidden="true"></i>
+                Mes Cours
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'etudiant'">
+              <a class="nav-link" routerLink="/devoirs" routerLinkActive="active"
+                 aria-label="Mes devoirs">
+                <i class="bi bi-pencil-square me-1" aria-hidden="true"></i>
+                Devoirs
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/communication" routerLinkActive="active"
+                 aria-label="Communication">
+                <i class="bi bi-chat-dots me-1" aria-hidden="true"></i>
+                Communication
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'etudiant'">
+              <a class="nav-link" routerLink="/appui-insertion" routerLinkActive="active"
+                 aria-label="Appui à l'insertion professionnelle">
+                <i class="bi bi-briefcase me-1" aria-hidden="true"></i>
+                Appui à l'Insertion
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'etudiant'">
+              <a class="nav-link" routerLink="/formations" routerLinkActive="active"
+                 aria-label="Formations">
+                <i class="bi bi-book me-1" aria-hidden="true"></i>
+                Formations
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'enseignant'">
+              <a class="nav-link" routerLink="/cours" routerLinkActive="active"
+                 aria-label="Mes cours">
+                <i class="bi bi-book me-1" aria-hidden="true"></i>
+                Mes Cours
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'admin'">
+              <a class="nav-link" routerLink="/etudiant" routerLinkActive="active"
+                 aria-label="Gestion des utilisateurs">
+                <i class="bi bi-people me-1" aria-hidden="true"></i>
+                Gestion Utilisateurs
+              </a>
+            </li>
+            
+            <li class="nav-item" *ngIf="userRole === 'admin'">
+              <a class="nav-link" routerLink="/administration" routerLinkActive="active"
+                 aria-label="Traitement des demandes">
+                <i class="bi bi-file-earmark-check me-1" aria-hidden="true"></i>
+                Traitement Demandes
+              </a>
+            </li>
+            
+            <!-- Notifications avec badge -->
+            <li class="nav-item position-relative">
+              <a class="nav-link" [routerLink]="'/communication'" 
+                 aria-label="Notifications, 3 non lues">
+                <i class="bi bi-bell fs-5" aria-hidden="true"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                      aria-label="3 notifications non lues">
+                  3
+                  <span class="visually-hidden">notifications non lues</span>
+                </span>
+              </a>
+            </li>
+            
+            <!-- Profil utilisateur avec label -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="javascript:void(0)" role="button" 
+                 data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menu utilisateur">
+                <i class="bi bi-person-circle fs-5 me-1" aria-hidden="true"></i>
+                <span class="d-none d-lg-inline">Mon Profil</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-label="Options du profil">
+                <li><a class="dropdown-item" routerLink="/etudiant">
+                  <i class="bi bi-person me-2" aria-hidden="true"></i>Mon Profil
+                </a></li>
+                <li><a class="dropdown-item" routerLink="/changer-mot-de-passe">
+                  <i class="bi bi-key me-2" aria-hidden="true"></i>Changer mot de passe
+                </a></li>
+                <li><a class="dropdown-item" routerLink="/parametres">
+                  <i class="bi bi-gear me-2" aria-hidden="true"></i>Paramètres
+                </a></li>
+                <li><a class="dropdown-item" routerLink="/aide">
+                  <i class="bi bi-question-circle me-2" aria-hidden="true"></i>Aide
+                </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" routerLink="/login">
+                  <i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Déconnexion
+                </a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
-   
-<!-- jQuery, Popper.js, and Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>
